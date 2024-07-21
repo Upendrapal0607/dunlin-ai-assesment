@@ -111,7 +111,7 @@ const LogedOut =  () => {
           </div>
           </>
           :<>
-        <div className='flex justify-between flex-wrap items-center border-b-2 bg-gray-800 border-gray-400'>
+        <div className='flex justify-between flex-wrap items-center border-b-2 md:p-1 p-2 bg-gray-900 border-gray-400'>
        {sideBarDisplay&&<GiHamburgerMenu onClick={toggleSidebar} className='text-white mt-3 ml-3 text-3xl'/>}
       {userName&& <div  className=' text-white text-center md:flex-row flex-col mr-2 md:mb-2 p-3 md:gap-4 rounded-full w-auto bg-gray-400 flex items-center content-center mt-3 ml-3 text-xl'>
         <h1 onMouseEnter={()=>setDisplayedUserId(true)} onMouseLeave={()=>setDisplayedUserId(false)} className='cursor-pointer ml-[3px]'>{dislpayUserId?userName:userName.split("").filter((item,index)=>index<=1?item:"").join("").trim()}</h1>
