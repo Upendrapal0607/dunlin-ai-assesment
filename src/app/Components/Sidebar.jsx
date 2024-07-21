@@ -92,9 +92,10 @@ const LogedOut =  () => {
  
  <div className={`${
         isVisibleSidebar ? 'visible' : 'hidden'
-      } ${sideBarDisplay&&"fixed"} top-0 left-0 b-0 h-screen mt-0 mb-0 rounded-e-lg p-0 sm:w-72 w-60 bg-black overflow-y-auto text-white z-50`} >
-          {!userName?<><div className='flex justify-center items-center bg-gray-900'>
-            <h1 className='text-white px-2 py-4 mt-3 ml-3 text-2xl'>DUNLIN-AI</h1>
+      } ${sideBarDisplay&&"fixed"} top-0 left-0 b-0 h-screen mt-0 mb-0 rounded-e-lg p-0 w-80 bg-black overflow-y-auto text-white z-50`} >
+          {!userName?<><div className='flex justify-between items-center bg-gray-900'>
+            {sideBarDisplay&&<GiHamburgerMenu onClick={toggleSidebar} className='text-white mt-3 ml-3 text-3xl'/>}
+            <h1 className='text-white px-2 mr-6 py-4 mt-3 ml-3 text-2xl'>DUNLIN-AI</h1>
         
           </div>
           <div className= 'flex flex-col items-center content-center p-4 w-full'>
@@ -110,7 +111,7 @@ const LogedOut =  () => {
           </div>
           </>
           :<>
-        <div className='flex justify-between flex-wrap items-center border-b-2 bg-gray-900 border-gray-400'>
+        <div className='flex justify-between flex-wrap items-center border-b-2 bg-gray-800 border-gray-400'>
        {sideBarDisplay&&<GiHamburgerMenu onClick={toggleSidebar} className='text-white mt-3 ml-3 text-3xl'/>}
       {userName&& <div  className=' text-white text-center md:flex-row flex-col mr-2 md:mb-2 p-3 md:gap-4 rounded-full w-auto bg-gray-400 flex items-center content-center mt-3 ml-3 text-xl'>
         <h1 onMouseEnter={()=>setDisplayedUserId(true)} onMouseLeave={()=>setDisplayedUserId(false)} className='cursor-pointer ml-[3px]'>{dislpayUserId?userName:userName.split("").filter((item,index)=>index<=1?item:"").join("").trim()}</h1>

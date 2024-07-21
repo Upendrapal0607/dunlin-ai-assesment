@@ -29,9 +29,13 @@ import { FcGoogle } from "react-icons/fc";
 export const App = () => {
   // All require Hooks
   const navigate = useRouter();
-  const { isVisibleSidebar, toggleSidebar,setShowHistoryId, toggleSidebarBaseOnScreen } =
-    UseContextValue();
-    const toast = useToast()
+  const {
+    isVisibleSidebar,
+    toggleSidebar,
+    setShowHistoryId,
+    toggleSidebarBaseOnScreen,
+  } = UseContextValue();
+  const toast = useToast();
   const [data, setData] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const [file, setFile] = useState(null);
@@ -39,13 +43,12 @@ export const App = () => {
   const [isAuth, setIsAuth] = useState(false);
   const [userName, seUserName] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [chatId,setChatId] = useState(null);
+  const [chatId, setChatId] = useState(null);
   const cancelRef = React.useRef();
-  const [dummyData,setDummyData] = useState([]);
+  const [dummyData, setDummyData] = useState([]);
   const [copied, setCopied] = useState(false);
 
-                
-  const [arr,setArr] = useState("Hello upendra PAl");
+  const [arr, setArr] = useState("Hello upendra PAl");
   // Google Authentication
   const signInWithGoogle = async () => {
     console.log("hello world of supabase");
@@ -60,11 +63,9 @@ export const App = () => {
     }
   };
 
-
-  
   useEffect(() => {
-    setChatId(UniqueId())
-  },[])
+    setChatId(UniqueId());
+  }, []);
 
   // Check Login User
   useEffect(() => {
@@ -103,6 +104,7 @@ export const App = () => {
 
   // Dynamic Screen change
   useEffect(() => {
+  
     window.addEventListener("resize", () => {
       if (window.screen.width < 768) {
         toggleSidebarBaseOnScreen(false);
@@ -110,8 +112,7 @@ export const App = () => {
         toggleSidebarBaseOnScreen(true);
       }
     });
-  }, [window.screen.width]);
-
+  }, [window&&window.screen.width]);
 
   // API intrigation
   const handleFetchData = async (fileContent) => {
@@ -142,20 +143,22 @@ export const App = () => {
       const result = response?.data?.candidates[0].content?.parts[0].text;
 
       const newEntry = {
-        question: inputValue|| "your file aploaded",
-        answer:  result ||"containt not found",
+        question: inputValue || "your file aploaded",
+        answer: result || "containt not found",
       };
       setData((prev) => [...prev.slice(0, -1), newEntry]);
       setFile(null);
-      if(data.length==0){
+      if (data.length == 0) {
         console.log(data);
+      } else if (data.length == 1) {
+        const SaveDatares = await SendHestory({
+          data,
+          userId: userName,
+          chatId,
+        });
+      } else {
+        const SaveDatares = await SendHestory({ data }, chatId);
       }
-     else if(data.length==1){    
-        const SaveDatares = await SendHestory({data,userId:userName,chatId})
-}else{
-  const SaveDatares = await SendHestory({data},chatId)
-}
-
     } catch (error) {
       console.error("Error making request:", error);
       // res.status(500).send("Internal Server Error");
@@ -164,8 +167,6 @@ export const App = () => {
     setInputValue("");
   };
 
-
-
   // Loged out the user
   const handleLogOut = () => {
     console.log("Log Out");
@@ -173,12 +174,10 @@ export const App = () => {
     setIsAuth(false);
     seUserName("");
     setData([]);
-    setShowHistoryId([])
-
-  
+    setShowHistoryId([]);
   };
 
-  // Upload file function 
+  // Upload file function
   const UploadFile = async () => {
     if (!isAuth) {
       onOpen();
@@ -186,10 +185,9 @@ export const App = () => {
     }
     // console.log(UniqueId());
     // // const SaveDatares = await SendHestory({data,userId:userName,chatId:Math.random().toFixed(4)*10000})
-    // return 
-   
+    // return
 
-      const formData = new FormData();
+    const formData = new FormData();
     formData.append("file", file);
     const newEntry = {
       question: inputValue || "your file aploaded",
@@ -203,7 +201,7 @@ export const App = () => {
           formData
         );
         console.log(response);
-        const formateData = response.data.split("")
+        const formateData = response.data.split("");
         handleFetchData(response?.data || "");
       } catch (error) {
         console.log({ error });
@@ -221,7 +219,7 @@ export const App = () => {
           title: `Copy to clipboard`,
           status: "success",
           isClosable: true,
-        })
+        });
       })
       .catch((err) => {
         console.error("Failed to copy: ", err);
@@ -233,11 +231,9 @@ export const App = () => {
   //   setTimeout(() => setCopied(false), 1500); // Reset copied state after 1.5 seconds
   // };
 
-  
-
   return (
     <div className="bg-gradient-to-r from-gray-300 to-gray-400 min-h-screen flex items-center justify-between w-full overflow-hidden">
-      <Sidebar userName={userName} data= {data}/>
+      <Sidebar userName={userName} data={data} />
       <div className="bg-black flex justify-between flex-col min-h-screen m-auto text-white rounded-lg md:w-[70%] w-[100%] p-0 overflow-hidden">
         <header className="bg-gray-900 rounded-t-lg p-4 flex justify-between items-center">
           <div className="flex items-center gap-2">
@@ -285,7 +281,8 @@ export const App = () => {
                           Login to Dunlin-AI
                         </h2>
                         <p className="mt-2 text-gray-600">
-                          Sign in with your Google account to access the AI platform.
+                          Sign in with your Google account to access the AI
+                          platform.
                         </p>
                       </div>
                       <AlertDialogBody className="w-full h-[700px] flex flex-col justify-center items-center">
@@ -293,7 +290,7 @@ export const App = () => {
                           onClick={signInWithGoogle}
                           className="px-4 py-2 bg-red-500 flex items-center content-center gap-2 text-white rounded-lg shadow-md hover:bg-red-600"
                         >
-                          <FcGoogle className="text-2xl"/>
+                          <FcGoogle className="text-2xl" />
                           Login with Google
                         </Button>
                       </AlertDialogBody>
@@ -302,8 +299,6 @@ export const App = () => {
                 </AlertDialog>
               </>
             )}
-    
-   
           </div>
         </header>
 
@@ -317,20 +312,21 @@ export const App = () => {
                 key={index}
                 className="mb-4 flex flex-col justify-between gap-4"
               >
-                <h3 onClick={()=>copyToClipboard(question.answer)} className="w-[90%] cursor-pointer md:w-[70%] p-3 font-semibold text-lg">
-                  
+                <h3
+                  onClick={() => copyToClipboard(question.answer)}
+                  className="w-[90%] cursor-pointer md:w-[70%] p-3 font-semibold text-lg"
+                >
                   {question.question}
                 </h3>
                 {question.answer ? (
                   <div className="max-w-[90%]  md:max-w-[70%] self-end">
                     <span>Sumrised Answer : </span>
-              
-                    <p onClick={()=>copyToClipboard(question.answer)}
+
+                    <p
+                      onClick={() => copyToClipboard(question.answer)}
                       className="max-w-[100%] cursor-pointer p-3 rounded-lg text-black bg-gray-100 "
                       dangerouslySetInnerHTML={{ __html: question.answer }}
-                    >
-                  
-                    </p>
+                    ></p>
                   </div>
                 ) : (
                   <TypingLoader />
@@ -366,11 +362,13 @@ export const App = () => {
             <div className="mt-[-30px] mr-1 flex font-semibold  self-end">
               <label className="rounded-lg px-2 py-1 cursor-pointe transition duration-300">
                 <PiUploadSimple
-                  className={`cursor-pointer rounded-lg ${file?"text-green-600":"text-gray-300"}`}
+                  className={`cursor-pointer rounded-lg ${
+                    file ? "text-green-600" : "text-gray-300"
+                  }`}
                   size={20}
                 />
                 <input
-                disabled = {file}
+                  disabled={file}
                   type="file"
                   accept=".txt, .html, .docs, .html, .pdf"
                   className="hidden"
