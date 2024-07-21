@@ -103,16 +103,35 @@ export const App = () => {
   }, [data]);
 
   // Dynamic Screen change
-  useEffect(() => {
+  // useEffect(() => {
   
-    window.addEventListener("resize", () => {
+  //   window.addEventListener("resize", () => {
+  //     if (window.screen.width < 768) {
+  //       toggleSidebarBaseOnScreen(false);
+  //     } else {
+  //       toggleSidebarBaseOnScreen(true);
+  //     }
+  //   });
+  // }, [window&&window.screen.width]);
+
+  useEffect(() => {
+    const handleResize = () => {
       if (window.screen.width < 768) {
         toggleSidebarBaseOnScreen(false);
       } else {
         toggleSidebarBaseOnScreen(true);
       }
-    });
-  }, [window&&window.screen.width]);
+    };
+
+    if (typeof window !== "undefined") {
+      window.addEventListener("resize", handleResize);
+
+      // Call the handler right away so state gets updated with initial window size
+      handleResize();
+      
+      return () => window.removeEventListener("resize", handleResize);
+    }
+  }, []);
 
   // API intrigation
   const handleFetchData = async (fileContent) => {
@@ -183,9 +202,7 @@ export const App = () => {
       onOpen();
       return;
     }
-    // console.log(UniqueId());
-    // // const SaveDatares = await SendHestory({data,userId:userName,chatId:Math.random().toFixed(4)*10000})
-    // return
+ 
 
     const formData = new FormData();
     formData.append("file", file);
@@ -225,11 +242,6 @@ export const App = () => {
         console.error("Failed to copy: ", err);
       });
   };
-  // const copyToClipboard = (text) => {
-  //   navigator.clipboard.writeText(text);
-  //   setCopied(true);
-  //   setTimeout(() => setCopied(false), 1500); // Reset copied state after 1.5 seconds
-  // };
 
   return (
     <div className="bg-gradient-to-r from-gray-300 to-gray-400 min-h-screen flex items-center justify-between w-full overflow-hidden">

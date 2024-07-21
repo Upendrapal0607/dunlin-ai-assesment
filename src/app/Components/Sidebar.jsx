@@ -27,18 +27,33 @@ export const Sidebar = ({userName,data,setData}) => {
     //  userName.split("").filter((item,index)=>index=1?item:"")
     // },[userName])
     useEffect(() => {
-      if(window.screen.width < 768){
-        setidebarDisplay(true)
+
+
+      const handleResize = () => {
+        if(window.screen.width < 768){
+          setidebarDisplay(true)
+        }
+          // window.addEventListener("resize",() => {
+              if(window.screen.width < 768){
+                  setidebarDisplay(true)
+              }
+              else{
+                  setidebarDisplay(false)
+              }
+            // })
+      };
+  
+      if (typeof window !== "undefined") {
+        window.addEventListener("resize", handleResize);
+  
+        // Call the handler right away so state gets updated with initial window size
+        handleResize();
+        
+        return () => window.removeEventListener("resize", handleResize);
       }
-        window.addEventListener("resize",() => {
-            if(window.screen.width < 768){
-                setidebarDisplay(true)
-            }
-            else{
-                setidebarDisplay(false)
-            }
-          })
-      },[window.screen.width]);
+
+    
+      },[]);
 
 
       const FeatchData = async() => {
