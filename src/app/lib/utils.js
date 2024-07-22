@@ -36,7 +36,7 @@ export const UniqueId = () => Math.random().toFixed(6) * 1000000;
 
 // };
 
-const baseUrl = "http://localhost:8080/chat/";
+const baseUrl = "https://dunlin-ai-backend.vercel.app/chat/";
 
 export const FetchAllHistory = async (userName) => {
   const response = await axios.get(`${baseUrl}Allhistory/${userName}`);

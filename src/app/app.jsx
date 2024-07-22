@@ -214,7 +214,7 @@ export const App = () => {
     if (file) {
       try {
         const response = await axios.post(
-          "http://localhost:8080/chat/upload",
+          "https://dunlin-ai-backend.vercel.app/chat/upload",
           formData
         );
         console.log(response);
