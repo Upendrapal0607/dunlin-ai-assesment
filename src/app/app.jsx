@@ -348,7 +348,7 @@ const [erroraccurse,setError] = useState(false);
           </div>
         ) : (
           <ul className="flex flex-col items-center justify-center  text-lg gap-2 my-8 overflow-y-auto max-h-[calc(100vh-200px)] p-8">
-            <p >"Hey chat with dunlin ai</p>
+            <p >Hey chat with dunlin ai</p>
           </ul>
         )}
         <div className="bg-black p-5 rounded-b-lg flex gap-4 items-end">
