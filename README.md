@@ -15,6 +15,17 @@ Check out the live project [live](https://dunlin-ai-assesment.vercel.app/).
 ## Video Walkthrough
 Watch the project walkthrough [vedio](https://drive.google.com/file/d/1Gho_XnrunyRrfWC2R5FZA8g3VM1ZJZaX/view?usp=sharing).
 
+## Screenshot 
+### With Sidebar
+![Screenshot 2024-07-22 150454](https://github.com/user-attachments/assets/29b60b07-a0a4-4540-8f70-61a7b762be41)
+
+### Without Sidebar
+![Screenshot 2024-07-22 150509](https://github.com/user-attachments/assets/1df8d06f-43c4-4837-b4d0-2f31bf4a5d81)
+
+### With Semmrized response
+![Screenshot 2024-07-22 150533](https://github.com/user-attachments/assets/452a6a62-f553-4f47-8f22-97d04106f972)
+
+
 ## Installation & Getting Started
 ### Frontend
 Follow these detailed instructions to install, configure, and run the project on your local system.
