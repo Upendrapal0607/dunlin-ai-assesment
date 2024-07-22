@@ -58,7 +58,6 @@ export const Sidebar = ({userName,data,setData,setError}) => {
           setError(false);
         } catch (error) {
           console.log({Error: error});
-          setError(true)
         }
       }
      
