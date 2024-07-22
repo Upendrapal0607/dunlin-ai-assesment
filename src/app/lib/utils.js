@@ -53,6 +53,7 @@ export const FetchSingleHistory = async (id) => {
  
 };
 
+
 export const SendHestory = async (data, chatId) => {
   const response = await axios.post(`${baseUrl}history`, { data, chatId });
   console.log({ response });

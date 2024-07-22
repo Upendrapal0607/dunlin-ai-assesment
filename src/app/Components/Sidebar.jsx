@@ -84,7 +84,7 @@ const HandelDelete = async id => {
     isClosable: true,
    })
   } catch (error) {
-
+console.log({error: error});
     toast({
       title: 'Error deleting history',
       description: 'Failed to delete the selected history. Please try again later.',
