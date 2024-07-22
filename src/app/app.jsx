@@ -137,7 +137,7 @@ export const App = () => {
   const handleFetchData = async (fileContent) => {
     try {
       const response = await axios.post(
-        `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=AIzaSyCwxOKlmm0DRXGlpnxwtK6ee0wqGEnSUJc`,
+        `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${process.env.NEXT_PUBLIC_API_KEY}`,
         {
           contents: [
             {

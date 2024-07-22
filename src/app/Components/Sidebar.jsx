@@ -1,10 +1,9 @@
 // "use client"
 import React, { useEffect, useState } from 'react'
 import { UseContextValue } from '../ContextProvide/ContextProvider'
-import { GiHamburgerMenu } from "react-icons/gi";
-// import {FetchAllHistory,CostomiseStrins} from "../Controller/controller.js"
+import { GiHamburgerMenu } from "react-icons/gi"
 import {FetchAllHistory,CostomiseString, DeleteHestory, FetchSingleHistory} from "../lib/utils"
-// import axios from 'axios';
+
 import {
   Menu,
   MenuButton,
