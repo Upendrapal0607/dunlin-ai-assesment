@@ -14,20 +14,15 @@ import {
   MenuOptionGroup,
   MenuDivider,
   Button,
+  useToast,
 } from '@chakra-ui/react'
 
-export const Sidebar = ({userName,data,setData}) => {
-    const {isVisibleSidebar,toggleSidebar} = UseContextValue()
-    const [sideBarDisplay,setidebarDisplay] = useState(false);
-    // const [ShowHistoryId,setShowHistoryId ] = useState([]);
-    const {setShowHistoryId,ShowHistoryId} = UseContextValue();
+export const Sidebar = ({userName,data,setData,setError}) => {
+  
+    const {setShowHistoryId,ShowHistoryId,isVisibleSidebar,toggleSidebar,toggleSidebarBaseOnScreen,sideBarDisplay,setidebarDisplay} = UseContextValue();
     const [dislpayUserId,setDisplayedUserId] = useState(false);
-    // useEffect(() => {
-    //  userName.split("").filter((item,index)=>index=1?item:"")
-    // },[userName])
+    const toast = useToast()
     useEffect(() => {
-
-
       const handleResize = () => {
         if(window.screen.width < 768){
           setidebarDisplay(true)
@@ -45,7 +40,6 @@ export const Sidebar = ({userName,data,setData}) => {
       if (typeof window !== "undefined") {
         window.addEventListener("resize", handleResize);
   
-        // Call the handler right away so state gets updated with initial window size
         handleResize();
         
         return () => window.removeEventListener("resize", handleResize);
@@ -59,10 +53,12 @@ export const Sidebar = ({userName,data,setData}) => {
         try {
           const Data = await FetchAllHistory(userName)
           const randerData = Data?.data?.map(item=>({id:item?._id,showText:CostomiseString(item?.data[0]?.question)}))
-          console.log({Data,randerData});
+    
           setShowHistoryId(randerData)
+          setError(false);
         } catch (error) {
           console.log({Error: error});
+          setError(true)
         }
       }
      
@@ -78,36 +74,52 @@ export const Sidebar = ({userName,data,setData}) => {
 const HandelDelete = async id => {
   try {
    const res =  await DeleteHestory(id)
-  //  console.log({res});
   setData([])
    FeatchData()
-   
+   setError(false)
+   toast({
+    title: 'History deleted successfully',
+    description: 'The selected history has been deleted.',
+    status: 'success',
+    duration: 1000,
+    isClosable: true,
+   })
   } catch (error) {
-    console.log({Error: error});
+
+    toast({
+      title: 'Error deleting history',
+      description: 'Failed to delete the selected history. Please try again later.',
+      status: 'error',
+      duration: 1000,
+      isClosable: true,
+    })
+    setError(true)
   }
 };
 const HandleGetSpecialChat = async id => {
   try {
    const res =  await FetchSingleHistory(id)
    setData(res?.data?.data)
-   
+   toggleSidebarBaseOnScreen()
+   setError(false)
   } catch (error) {
     console.log({Error: error});
+    toggleSidebarBaseOnScreen()
+    setError(true)
   }
 };
 
-const LogedOut =  () => {
-  setShowHistoryId([])
-};
-
-
-
   return (
  
- <div className={`${
-        isVisibleSidebar ? 'visible' : 'hidden'
-      } ${sideBarDisplay&&"fixed"} top-0 left-0 b-0 h-screen mt-0 mb-0 rounded-e-lg p-0 w-80 bg-black overflow-y-auto text-white z-50`} >
-          {!userName?<><div className='flex justify-between items-center bg-gray-900'>
+ <div
+  className={`${
+        isVisibleSidebar ? 'translate-x-0 visible' : '-translate-x-full hidden'
+      } ${sideBarDisplay&&"fixed"} transition-transform duration-300 ease-in-out top-0 left-0 b-0 h-screen mt-0 mb-0 rounded-e-lg p-0 w-80  bg-black overflow-y-auto text-white z-50`} 
+      
+      >
+          {!userName?<><div className='flex justify-between items-center bg-gray-900'
+          
+          >
             {sideBarDisplay&&<GiHamburgerMenu onClick={toggleSidebar} className='text-white mt-3 ml-3 text-3xl'/>}
             <h1 className='text-white px-2 mr-6 py-4 mt-3 ml-3 text-2xl'>DUNLIN-AI</h1>
         
@@ -134,22 +146,20 @@ const LogedOut =  () => {
 <div className='justify-evenly items-center'>
   {ShowHistoryId?.map(item => <div key={item.id} className='flex px-2 justify-between items-center'>
     <button onClick={()=>HandleGetSpecialChat(item?.id)} className='text-gray-400 block mt-3 ml-3 text-xl'>{item?.showText}</button>
-    <Menu className = "">
-  {({ isOpen }) => (
-    // rightIcon={<ChevronDownIcon />}>
-    <>
-      <MenuButton isActive={isOpen} className='font-bold text-2xl text-white'>
-       {"..."}
-      </MenuButton>
-      <MenuList>
-        <MenuItem>Download</MenuItem>
-        <MenuItem onClick={() => HandelDelete(item?.id)}>
-        Delete
-        </MenuItem>
-      </MenuList>
-    </>
-  )}
-</Menu>
+ <Menu>
+                    {({ isOpen }) => (
+                      <>
+                        <MenuButton isActive={isOpen} className="font-bold text-2xl text-white">
+                          {"..."}
+                        </MenuButton>
+                        <MenuList>
+                          <MenuItem onClick={() => HandelDelete(item?.id)} color="black">
+                            Delete
+                          </MenuItem>
+                        </MenuList>
+                      </>
+                    )}
+                  </Menu>
   </div>
   )}
  

@@ -44,8 +44,13 @@ export const FetchAllHistory = async (userName) => {
 };
 
 export const FetchSingleHistory = async (id) => {
-  const response = await axios.get(`${baseUrl}history/${id}`);
-  return response.data;
+  try {
+    const response = await axios.get(`${baseUrl}history/${id}`);
+    return response.data;
+  } catch (error) {
+    return error
+  }
+ 
 };
 
 export const SendHestory = async (data, chatId) => {

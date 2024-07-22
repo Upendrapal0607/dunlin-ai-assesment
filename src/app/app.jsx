@@ -34,6 +34,7 @@ export const App = () => {
     toggleSidebar,
     setShowHistoryId,
     toggleSidebarBaseOnScreen,
+    sideBarDisplay,
   } = UseContextValue();
   const toast = useToast();
   const [data, setData] = useState([]);
@@ -45,13 +46,10 @@ export const App = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [chatId, setChatId] = useState(null);
   const cancelRef = React.useRef();
-  const [dummyData, setDummyData] = useState([]);
-  const [copied, setCopied] = useState(false);
-
+const [erroraccurse,setError] = useState(false);
   const [arr, setArr] = useState("Hello upendra PAl");
   // Google Authentication
   const signInWithGoogle = async () => {
-    console.log("hello world of supabase");
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
@@ -60,6 +58,9 @@ export const App = () => {
     });
     if (error) {
       console.error("Error signing in with Google:", error.message);
+      setError(true)
+    }else{
+      setError(false);
     }
   };
 
@@ -78,16 +79,19 @@ export const App = () => {
         } = await supabase.auth.getUser();
         if (userError) {
           console.error("Error getting user:", userError.message);
+          setError(false);
           return;
         }
 
         if (!user) {
-        } else {
+        }
+         else {
           const { aud, email } = user;
           if (aud) {
             setIsAuth(true);
             seUserName(email);
           }
+          setError(true);
         }
       }
     };
@@ -103,17 +107,6 @@ export const App = () => {
   }, [data]);
 
   // Dynamic Screen change
-  // useEffect(() => {
-  
-  //   window.addEventListener("resize", () => {
-  //     if (window.screen.width < 768) {
-  //       toggleSidebarBaseOnScreen(false);
-  //     } else {
-  //       toggleSidebarBaseOnScreen(true);
-  //     }
-  //   });
-  // }, [window&&window.screen.width]);
-
   useEffect(() => {
     const handleResize = () => {
       if (window.screen.width < 768) {
@@ -162,13 +155,13 @@ export const App = () => {
       const result = response?.data?.candidates[0].content?.parts[0].text;
 
       const newEntry = {
-        question: inputValue || "your file aploaded",
+        question: inputValue || "your file uploaded",
         answer: result || "containt not found",
       };
       setData((prev) => [...prev.slice(0, -1), newEntry]);
       setFile(null);
       if (data.length == 0) {
-        console.log(data);
+    
       } else if (data.length == 1) {
         const SaveDatares = await SendHestory({
           data,
@@ -178,8 +171,10 @@ export const App = () => {
       } else {
         const SaveDatares = await SendHestory({ data }, chatId);
       }
+      setError(false);
     } catch (error) {
       console.error("Error making request:", error);
+      setError(true)
       // res.status(500).send("Internal Server Error");
     }
 
@@ -188,7 +183,7 @@ export const App = () => {
 
   // Loged out the user
   const handleLogOut = () => {
-    console.log("Log Out");
+
     Cookies.remove("sb-vxysqlojrtxmdzgxcqda-auth-token.0");
     setIsAuth(false);
     seUserName("");
@@ -207,7 +202,7 @@ export const App = () => {
     const formData = new FormData();
     formData.append("file", file);
     const newEntry = {
-      question: inputValue || "your file aploaded",
+      question: inputValue || "your file uploaded",
       answer: null,
     };
     setData((prev) => [...prev, newEntry]);
@@ -217,11 +212,14 @@ export const App = () => {
           "https://dunlin-ai-backend.vercel.app/chat/upload",
           formData
         );
-        console.log(response);
+        
+        console.log({response});
         const formateData = response.data.split("");
         handleFetchData(response?.data || "");
+        setError(false)
       } catch (error) {
         console.log({ error });
+        setError(true)
       }
     } else {
       handleFetchData("");
@@ -237,16 +235,18 @@ export const App = () => {
           status: "success",
           isClosable: true,
         });
+        setError(true)
       })
       .catch((err) => {
         console.error("Failed to copy: ", err);
+        setError(false)
       });
   };
 
   return (
     <div className="bg-gradient-to-r from-gray-300 to-gray-400 min-h-screen flex items-center justify-between w-full overflow-hidden">
-      <Sidebar userName={userName} data={data} />
-      <div className="bg-black flex justify-between flex-col min-h-screen m-auto text-white rounded-lg md:w-[70%] w-[100%] p-0 overflow-hidden">
+      <Sidebar userName={userName} data={data} setData= {setData} setError = {setError}/>
+      <div className={`${(sideBarDisplay&&isVisibleSidebar)?"bg-gray-800":"bg-black "} flex justify-between flex-col min-h-screen m-auto text-white rounded-lg md:w-[70%] w-[100%] p-0 overflow-hidden`}>
         <header className="bg-gray-900 rounded-t-lg p-4 flex justify-between items-center">
           <div className="flex items-center gap-2">
             <div className="w-9 h-9 rounded-full p-1 flex justify-center items-center">
@@ -348,7 +348,7 @@ export const App = () => {
           </div>
         ) : (
           <ul className="flex flex-col items-center justify-center  text-lg gap-2 my-8 overflow-y-auto max-h-[calc(100vh-200px)] p-8">
-            <p>Hey chat with dunlin ai</p>
+            <p className={`${erroraccurse&&"text-red-500"}`}>{erroraccurse?"An error accurse from server side":"Hey chat with dunlin ai"}</p>
           </ul>
         )}
         <div className="bg-black p-5 rounded-b-lg flex gap-4 items-end">
@@ -380,7 +380,7 @@ export const App = () => {
                   size={20}
                 />
                 <input
-                  disabled={file}
+            
                   type="file"
                   accept=".txt, .html, .docs, .html, .pdf"
                   className="hidden"

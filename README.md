@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# DUNLIN-ASSIGNMENT
 
-## Getting Started
+## Project Title
+**Generative AI Project**
 
-First, run the development server:
+## Introduction
+Welcome to the Generative AI Project, a cutting-edge application designed to generate content based on AI responses. Give any type  of file like pdf,ducument and txt or content it do Summarization and Analysis and give you summrized outpu of containt about your crush and their style, and the AI will generate summrized answers for you.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Project Type
+This is a full stack solo project.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Project Link
+Check out the live project [live](https://dunlin-ai-assesment.vercel.app/).
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Video Walkthrough
+Watch the project walkthrough [vedio](https://drive.google.com/file/d/1Gho_XnrunyRrfWC2R5FZA8g3VM1ZJZaX/view?usp=sharing).
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Installation & Getting Started
+### Frontend
+Follow these detailed instructions to install, configure, and run the project on your local system.
 
-## Learn More
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/Upendrapal0607/dunlin-ai-assesment.git
+    ```
 
-To learn more about Next.js, take a look at the following resources:
+2. Navigate to the project directory:
+    ```bash
+    cd dunlin-ai-assesment
+    ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. Install the dependencies:
+    ```bash
+    npm install
+    ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+4. Run the development server:
+    ```bash
+    npm run dev
+    ```
 
-## Deploy on Vercel
+5. Open your browser and go to `http://localhost:3000/` to see the project in action.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Backend
+Follow these detailed instructions to install, configure, and run the project on your local system.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/Upendrapal0607/dunlin-ai-backend.git
+    ```
+
+2. Navigate to the project directory:
+    ```bash
+    cd dunlin-ai-backend
+    ```
+
+3. Install the dependencies:
+    ```bash
+    npm install
+    ```
+
+4. Run the development server:
+    ```bash
+    npm run server
+    ```
+
+5. Open your browser and go to `http://localhost:8080/` to see the project in action.
+
+## Note :
+Make Sure add all configration like .env variable (which I don't push on gihub repo but I can give you for testing)
+
+## Technology Stack
+- **Next.js**
+- **Tailwind CSS**
+- **Google AI api**
+- **JavaScript**
+- **Supabase (Authntication perpose)**
+- **Node.js**
+- **Express.js**
+- **Mongo DB**
+- **Other Libraries/Modules**
+
+## Thanks,
+**Upendra Pal**
+
+[upendrapal06072@gmail.com](mailto:upendrapal06072@gmail.com)
