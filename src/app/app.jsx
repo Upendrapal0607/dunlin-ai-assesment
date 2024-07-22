@@ -45,6 +45,7 @@ export const App = () => {
   const [userName, seUserName] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [chatId, setChatId] = useState(null);
+  const [max_file_size,setMax] = useState(5 * 1024 * 1024)  // 5 MB in bytes
   const cancelRef = React.useRef();
 const [erroraccurse,setError] = useState(false);
   const [arr, setArr] = useState("Hello upendra PAl");
@@ -212,14 +213,13 @@ const [erroraccurse,setError] = useState(false);
           "https://dunlin-ai-backend.vercel.app/chat/upload",
           formData
         );
-        
         console.log({response});
         const formateData = response.data.split("");
         handleFetchData(response?.data || "");
-        setError(false)
+  
       } catch (error) {
         console.log({ error });
-        setError(true)
+       
       }
     } else {
       handleFetchData("");
@@ -384,7 +384,22 @@ const [erroraccurse,setError] = useState(false);
                   type="file"
                   accept=".txt, .html, .docs, .html, .pdf"
                   className="hidden"
-                  onChange={(e) => setFile(e.target.files[0])}
+                  onChange={(e) =>{
+                    const selectedFile = e.target.files[0];
+                    if (selectedFile && selectedFile.size >= max_file_size) {
+                      toast({
+                        title: 'File too large',
+                        status: 'error',
+                        isClosable: true,
+                        autoCloseTimeout: 1500,
+                      })
+                      
+                      setFile(null);
+                    } else {
+                      setFile(selectedFile);
+                    }
+                  }
+                  }
                 />
               </label>
 
